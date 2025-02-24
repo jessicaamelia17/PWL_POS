@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('penjualan_tanggal', );
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
+            // Mendefinisikan Foreign Key pada kolom level_id mengacu pada kolom user_id di tabel m_user
+            $table->foreign('user_id')->references('user_id')->on('m_user');
         });
     }
-
     /**
      * Reverse the migrations.
      */

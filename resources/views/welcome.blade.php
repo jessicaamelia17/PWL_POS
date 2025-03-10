@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layouts.app')
 @extends('adminlte::page').
 {{-- Customize layout sections --}}
 @section('title', 'Welcome')

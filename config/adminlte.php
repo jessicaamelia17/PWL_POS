@@ -305,6 +305,13 @@ return [
             'text' => 'search',
             'topnav_right' => true,
         ],
+            // Tambahkan item menu Manage Kategori di bawah ini
+    [
+        'text'  => 'Manage Kategori',
+        'route' => 'kategori.index',
+        'icon'  => 'fa-clipboard-list',
+        'topnav' => true,  // Akan muncul di top navbar
+    ],
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,

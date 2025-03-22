@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\m_user;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('m_user');
+        Schema::dropIfExists('useri');
     }
 };

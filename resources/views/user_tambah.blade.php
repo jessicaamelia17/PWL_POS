@@ -8,36 +8,66 @@
         <div class="card-header">
           <h3 class="card-title">Form untuk tabel m_user</h3>
         </div>
-        <form id="quickForm" method="post" action="/user/tambah_simpan">
-            {{ csrf_field() }} 
+        <form id="quickForm" method="POST" action="{{ url('/user/tambah_simpan') }}">
+          @csrf
           <div class="card-body">
+            <!-- Pesan error -->
+            @if ($errors->any())
+              <div class="alert alert-danger">
+                <ul>
+                  @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                  @endforeach
+                </ul>
+              </div>
+            @endif
+
             <div class="form-group">
               <label for="username">Username</label>
-              <input type="text" class="form-control" id="username" placeholder="Masukkan username">
+              <input type="text" name="username" class="form-control @error('username') is-invalid @enderror"
+                id="username" placeholder="Masukkan username" value="{{ old('username') }}">
+              @error('username')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
+
             <div class="form-group">
               <label for="nama">Nama</label>
-              <input type="text" class="form-control" id="nama" placeholder="Masukkan nama">
+              <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror"
+                id="nama" placeholder="Masukkan nama" value="{{ old('nama') }}">
+              @error('nama')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
+
             <div class="form-group">
               <label for="password">Password</label>
-              <input type="password" class="form-control" id="password" placeholder="Masukkan password">
+              <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+                id="password" placeholder="Masukkan password">
+              @error('password')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
+
             <div class="form-group">
               <label for="level">Level</label>
-              <select class="form-control" id="level">
-                <option>Administrator</option>
-                <option>Manager</option>
-                <option>Staff</option>
+              <select name="level_id" class="form-control @error('level_id') is-invalid @enderror" id="level">
+                <option value="">Pilih Level</option>
+                <option value="1" {{ old('level_id') == 1 ? 'selected' : '' }}>Administrator</option>
+                <option value="2" {{ old('level_id') == 2 ? 'selected' : '' }}>Manager</option>
+                <option value="3" {{ old('level_id') == 3 ? 'selected' : '' }}>Staff</option>
               </select>
+              @error('level_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
+
             <div class="form-check">
-              <input type="checkbox" class="form-check-input" id="termsCheck">
+              <input type="checkbox" name="terms" class="form-check-input" id="termsCheck">
               <label class="form-check-label" for="termsCheck">
-                I agree to the <a href="#" class="text-primary font-weight-bold">terms of service</a>.
+                Saya setuju dengan <a href="#" class="text-primary font-weight-bold">syarat dan ketentuan</a>.
               </label>
             </div>
-            
           </div>
           <div class="card-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -45,15 +75,12 @@
         </form>
       </div>
     </div>
-
-
   </div>
 </div>
 @stop
 
 @section('css')
 {{-- Add here extra stylesheets --}}
-{{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 @stop
 
 @section('js')

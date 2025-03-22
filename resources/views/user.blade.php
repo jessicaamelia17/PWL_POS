@@ -1,30 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Data User</title>
-</head>
-<body>
-     {{-- Perbaikan prak 2.6 --}}
-    <h1>Data User</h1>
-    <a href="user/tambah">+ Tambah User</a>
-    <table border="1" cellpadding="2" cellspacing="0">
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Nama</th>
-            <th>ID Level Pengguna</th>
-            <th>Aksi</th>
-        </tr>
-      @foreach($data as $d)
-        <tr>
-            <td>{{$d->user_id}}</td>
-            <td>{{$d->username}}</td>
-            <td>{{$d->nama}}</td>
-            <td>{{$d->level_id}}</td>
-            <td><a href="/user/ubah/{{ $d->user_id }}">Ubah</a> | <a href="/user/hapus/{{ $d->user_id}}">Hapus</a></td>
-        </tr>
-       @endforeach
-        
-    </table>
-</body>
-</html>
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3>Daftar User</h3>
+        </div>
+        <div class="card-body">
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <a href="{{ url('/user/tambah') }}" class="btn btn-primary mb-3">Tambah User</a>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Username</th>
+                        <th>Nama</th>
+                        <th>Kode Level</th>
+                        <th>Nama Level</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $key => $user)
+                    <tr>
+                        <td>{{ $key+1 }}</td>
+                        <td>{{ $user->username }}</td>
+                        <td>{{ $user->nama }}</td>
+                        <td>{{ $user->level->level_kode }}</td>
+                        <td>{{ $user->level->level_nama }}</td>
+                        <td>
+                            <a href="{{ url('/user/ubah/'.$user->user_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ url('/user/hapus/'.$user->user_id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+</div>
+@endsection

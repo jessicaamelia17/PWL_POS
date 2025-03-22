@@ -1,41 +1,44 @@
 @extends('adminlte::page')
 
 @section('content')
-<div class="container-fluid">
-  <div class="row">
-
-    <div class="col-md-6">
-      <!-- Form untuk m_level -->
-      <div class="card card-info">
+<div class="container">
+    <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Form untuk tabel m_level</h3>
+            <h3>Daftar Level</h3>
         </div>
-        <form>
-          <div class="card-body">
-            <div class="form-group">
-              <label for="levelName">Nama Level</label>
-              <input type="text" class="form-control" id="levelName" placeholder="Masukkan nama level">
-            </div>
-            <div class="form-group">
-              <label for="levelCode">Kode Level</label>
-              <input type="text" class="form-control" id="levelCode" placeholder="Masukkan kode level">
-            </div>
-          </div>
-          <div class="card-footer">
-            <button type="submit" class="btn btn-info">Submit</button>
-          </div>
-        </form>
-      </div>
+        <div class="card-body">
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <a href="{{ url('/level/tambah') }}" class="btn btn-primary mb-3">Tambah Level</a>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Kode Level</th>
+                        <th>Nama Level</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($data as $key => $level)
+                    <tr>
+                        <td>{{ $key+1 }}</td>
+                        <td>{{ $level->level_kode }}</td>
+                        <td>{{ $level->level_nama }}</td>
+                        <td>
+                            <a href="{{ url('/level/ubah/'.$level->level_id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{{ url('/level/hapus/'.$level->level_id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
 </div>
-@stop
-
-@section('css')
-{{-- Add here extra stylesheets --}}
-{{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
-@stop
-
-@section('js')
-<script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
-@stop
+@endsection

@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\KategoriModel;
 use Illuminate\Http\Request;
 use App\DataTables\KategoriDataTable;
+use Illuminate\Http\RedirectResponse;
 
 class KategoriController extends Controller
 {
     public function index(KategoriDataTable $dataTable)
     {
         return $dataTable->render('kategori.index');
+        
     }
 
     public function create()
@@ -18,16 +20,20 @@ class KategoriController extends Controller
         return view('kategori.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        $validatedData = $request->validate([
-            'kategori_kode' => ['bail', 'required', 'string', 'max:5', 'unique:m_kategori,kategori_kode'],
-            'kategori_nama' => ['bail', 'required', 'string', 'max:50'],
+        // Validate the incoming request data
+        $validated = $request->validate([
+            'kategori_kode' => 'required|string|max:255',
+            'kategori_nama' => 'required|string|max:255',
         ]);
     
-        KategoriModel::create($validatedData);
+        // Store the validated data
+        KategoriModel::create($validated);
     
-        return redirect('/kategori')->with('success', 'Kategori berhasil ditambahkan');
+        // Redirect with success message
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan');
+        
     }
     
 
@@ -63,16 +69,16 @@ class KategoriController extends Controller
     }
 
     public function destroy($id)
-{
-    // Cari data kategori berdasarkan primary key (sesuaikan dengan kolom di DB)
-    $kategori = KategoriModel::findOrFail($id);
+    {
+        // Cari data kategori berdasarkan primary key (sesuaikan dengan kolom di DB)
+        $kategori = KategoriModel::findOrFail($id);
 
-    // Hapus data
-    $kategori->delete();
+        // Hapus data
+        $kategori->delete();
 
-    // Redirect kembali ke halaman index dengan pesan sukses (opsional)
-    return redirect()->route('kategori.index')
-                     ->with('success', 'Data Kategori berhasil dihapus.');
-}
+        // Redirect kembali ke halaman index dengan pesan sukses (opsional)
+        return redirect()->route('kategori.index')
+                         ->with('success', 'Data Kategori berhasil dihapus.');
+    }
 
 }

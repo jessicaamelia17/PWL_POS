@@ -12,15 +12,20 @@
                 Manage Kategori
             </div>
             <div class="card-body">
+                {{-- Tampilkan pesan sukses di atas --}}
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
                 {{-- Tombol kecil di sisi kiri --}}
+                <a href="/kategori/create" class="btn btn-primary float-left">Add Kategori</a>
+                
                 {{-- Bersihkan float agar tabel berada di bawah tombol --}}
                 <div class="clearfix"></div>
-                
+
                 {!! $dataTable->table() !!}
-                <a href="{{ route('kategori.create') }}" 
-                   class="btn btn-primary btn-sm mb-3 float-start">
-                    Add Kategori
-                </a>
             </div>
         </div>
     </div>

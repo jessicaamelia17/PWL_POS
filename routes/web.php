@@ -34,9 +34,12 @@ Route::get('/kategori/create', [KategoriController::class, 'create'])->name('kat
 Route::post('/kategori', [KategoriController::class, 'store'])->name('kategori.store');
 Route::get('/kategori/{id}/edit', [KategoriController::class, 'edit'])
      ->name('kategori.edit');
- Route::put('/kategori/{id}', [KategoriController::class, 'update'])
+Route::put('/kategori/{id}', [KategoriController::class, 'update'])
      ->name('kategori.update');
-     Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])
+Route::delete('/kategori/{id}', [KategoriController::class, 'destroy'])
      ->name('kategori.destroy');
+Route::get('/level/tambah', [LevelController::class, 'create']);
+
+Route::post('/level/store', [LevelController::class, 'store'])->name('level.store');
 
 

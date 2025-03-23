@@ -1,48 +1,78 @@
-@extends('m_user/template') @section('content')
-<div class="row mt-5 mb-5">
-<div class="col-lg-12 margin-tb">
-<div class="float-left">
-<h2> Show User</h2>
-</div>
-<div class="float-right">
-<a class="btn btn-secondary" href="{{ route('m_user.index') }}"> Kembali</a>
-</div>
-</div>
-</div>
-<div class="row">
-<div class="col-xs-12 col-sm-12 col-md-12">
-<div class="form-group">
-<strong>User_id:</strong>
-{{ $useri->user_id }}
-</div>
-</div>
-<div class="col-xs-12 col-sm-12 col-md-12">
-<div class="form-group">
-<strong>Level_id:</strong>
-{{ $useri->level_id }}
-</div>
+@extends('m_user/template')
+
+@section('content')
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header text-center text-white bg-black">
+                    <h3>Detail User</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-borderless">
+                        <tr>
+                            <th class="text-secondary">User ID:</th>
+                            <td>{{ $useri->user_id }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-secondary">Level ID:</th>
+                            <td>{{ $useri->level_id }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-secondary">Username:</th>
+                            <td>{{ $useri->username }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-secondary">Nama:</th>
+                            <td>{{ $useri->nama }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-secondary">Password:</th>
+                            <td>
+                                <span id="passwordText">********</span>
+                                <button class="btn btn-sm btn-outline-dark" onclick="togglePassword()">👁</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <a class="btn btn-dark" href="{{ route('m_user.index') }}">Kembali</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="col-xs-12 col-sm-12 col-md-12">
-<div class="form-group">
-<strong>Username:</strong>
-{{ $useri->username }}
-</div>
-</div>
+<script>
+    function togglePassword() {
+        let passwordText = document.getElementById("passwordText");
+        if (passwordText.innerText === "********") {
+            passwordText.innerText = "{{ $useri->password }}";
+        } else {
+            passwordText.innerText = "********";
+        }
+    }
+</script>
 
+<style>
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
 
-<div class="col-xs-12 col-sm-12 col-md-12">
-<div class="form-group">
-<strong>Nama:</strong>
-{{ $useri->nama }}
-</div>
-</div>
+    .bg-black {
+        background-color: black !important;
+    }
 
-<div class="col-xs-12 col-sm-12 col-md-12">
-<div class="form-group">
-<strong>Password:</strong>
-{{ $useri->password }}
-</div>
-</div>
+    .card-header {
+        font-weight: bold;
+    }
 
-</div> @endsection
+    table th {
+        width: 30%;
+        font-weight: bold;
+        color: black;
+    }
+</style>
+
+@endsection

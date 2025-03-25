@@ -1,38 +1,59 @@
-@extends('layouts.app')
+@extends('layouts.template')
 
 @section('content')
-<div class="container">
-    <h1>Edit Kategori</h1>
-
-    {{-- Tampilkan pesan sukses/error (opsional) --}}
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    <form action="{{ route('kategori.update', $kategori->kategori_id) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <div class="mb-3">
-            <label for="kategori_kode" class="form-label">Kode Kategori</label>
-            <input type="text" name="kategori_kode" class="form-control" id="kategori_kode"
-                   value="{{ old('kategori_kode', $kategori->kategori_kode) }}">
-            @error('kategori_kode')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Edit Kategori</h3>
+            <div class="card-tools"></div>
         </div>
+        <div class="card-body">
+            @empty($kategori)
+                <div class="alert alert-danger alert-dismissible">
+                    <h5><i class="icon fas fa-ban"></i> Kesalahan!</h5>
+                    Data yang Anda cari tidak ditemukan.
+                </div>
+                <a href="{{ url('kategori') }}" class="btn btn-sm btn-default mt-2">Kembali</a>
+            @else
+                <form method="POST" action="{{ url('/kategori/'.$kategori->kategori_id) }}" class="form-horizontal">
+                    @csrf
+                    {!! method_field('PUT') !!} <!-- Gunakan method PUT untuk update data -->
 
-        <div class="mb-3">
-            <label for="kategori_nama" class="form-label">Nama Kategori</label>
-            <input type="text" name="kategori_nama" class="form-control" id="kategori_nama"
-                   value="{{ old('kategori_nama', $kategori->kategori_nama) }}">
-            @error('kategori_nama')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
+                    <div class="form-group row">
+                        <label class="col-2 control-label col-form-label">Kode Kategori</label>
+                        <div class="col-10">
+                            <input type="text" class="form-control" id="kategori_kode" name="kategori_kode" value="{{ old('kategori_kode', $kategori->kategori_kode) }}" required>
+                            @error('kategori_kode')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-2 control-label col-form-label">Nama Kategori</label>
+                        <div class="col-10">
+                            <input type="text" class="form-control" id="kategori_nama" name="kategori_nama" value="{{ old('kategori_nama', $kategori->kategori_nama) }}" required>
+                            @error('kategori_nama')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-2 control-label col-form-label"></label>
+                        <div class="col-10">
+                            <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                            <a class="btn btn-sm btn-default ml-1" href="{{ url('kategori') }}">Kembali</a>
+                        </div>
+                    </div>
+
+                </form>
+            @endempty
         </div>
-
-        <button type="submit" class="btn btn-primary">Update</button>
-        <a href="{{ route('kategori.index') }}" class="btn btn-secondary">Batal</a>
-    </form>
-</div>
+    </div>
 @endsection
+
+@push('css')
+@endpush
+
+@push('js')
+@endpush

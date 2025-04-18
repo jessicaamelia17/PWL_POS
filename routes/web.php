@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [LevelController::class, 'destroy']);// menghapus data level
         Route::get('import', [LevelController::class, 'import']);
         Route::post('import_ajax', [LevelController::class, 'import_ajax']);
+        Route::get('export_excel', [LevelController::class, 'export_excel']);
     });
     
         Route::middleware(['authorize:ADM'])->prefix('kategori')->group(function (){

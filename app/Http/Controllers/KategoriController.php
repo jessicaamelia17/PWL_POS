@@ -6,6 +6,7 @@ use App\Models\KategoriModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class KategoriController extends Controller
 {
@@ -22,12 +23,17 @@ class KategoriController extends Controller
 
         $activeMenu = 'kategori';
 
+        // Fetch all categories
+        $kategori = KategoriModel::all(); // Get all categories or use pagination if necessary
+
         return view('kategori.index', [
             'breadcrumb' => $breadcrumb, 
             'page' => $page,
-            'activeMenu' => $activeMenu
+            'activeMenu' => $activeMenu,
+            'kategori' => $kategori // Pass the categories here
         ]);
     }
+
 
     public function list()
     {
@@ -242,4 +248,79 @@ class KategoriController extends Controller
  
          return redirect('/');
      }
+     public function import()
+    {
+        return view('kategori.import'); // buat file view bernama kategori/import.blade.php
+    }
+
+    // Proses import data kategori via AJAX
+    public function import_ajax(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            // Validasi file
+            $rules = [
+                'file_kategori' => ['required', 'mimes:xlsx', 'max:1024'] // max 1MB
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            $file = $request->file('file_kategori');
+
+            // Membaca file Excel menggunakan PhpSpreadsheet
+            $reader = IOFactory::createReader('Xlsx');
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getRealPath());
+            $sheet = $spreadsheet->getActiveSheet();
+
+            // Mengambil data sheet dalam bentuk array
+            $data = $sheet->toArray(null, false, true, true); // hasil array ['A' => kode, 'B' => nama]
+
+            $insert = [];
+
+            // Memproses data kecuali baris pertama (header)
+            if (count($data) > 1) {
+                foreach ($data as $baris => $value) {
+                    if ($baris > 1) { // Lewati baris header
+                        if (!empty($value['A']) && !empty($value['B'])) {
+                            $insert[] = [
+                                'kategori_kode' => trim($value['A']),
+                                'kategori_nama' => trim($value['B']),
+                                'created_at' => now(),
+                                'updated_at' => now(),
+                            ];
+                        }
+                    }
+                }
+
+                // Menyimpan data kategori ke database
+                if (count($insert) > 0) {
+                    KategoriModel::insertOrIgnore($insert); // Insert data tanpa duplikasi
+
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data berhasil diimport'
+                    ]);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Data kosong atau tidak valid'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada data dalam file'
+                ]);
+            }
+        }
+
+        return redirect('/');
+    }
 }

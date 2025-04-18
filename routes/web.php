@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy']);// menghapus data user
         Route::get('import', [UserController::class, 'import']);
         Route::post('import_ajax', [UserController::class, 'import_ajax']);
+        Route::get('export_excel', [UserController::class, 'export_excel']);
     });
     
         Route::middleware(['authorize:ADM'])->prefix('level')->group(function (){

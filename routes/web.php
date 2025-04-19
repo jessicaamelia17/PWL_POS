@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
 Route::pattern('id', '[0-9]+');
 
@@ -20,6 +21,9 @@ Route::post('/register', [AuthController::class, 'store_user'])->name('register.
 
 Route::middleware('auth')->group(function () {
    
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
     Route::get('/', [WelcomeController::class, 'index']);
     
         Route::middleware(['authorize:ADM'])->prefix('user')->group(function (){

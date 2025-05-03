@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\LevelController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\KategoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,12 @@ Route::get('users', [UserController::class, 'index']);
  Route::get('users/{user}', [UserController::class, 'show']);
  Route::put('users/{user}', [UserController::class, 'update']);
  Route::delete('users/{user}', [UserController::class, 'destroy']);
+
+ Route::get('kategoris', [KategoriController::class, 'index']); 
+ Route::post('kategoris', [KategoriController::class, 'store']); 
+ Route::get('kategoris/{kategori}', [KategoriController::class, 'show']); 
+ Route::put('kategoris/{kategori}', [KategoriController::class, 'update']); 
+ Route::delete('kategoris/{kategori}', [KategoriController::class, 'destroy']);
 
 Route::post('/logout', App\Http\Controllers\Api\LogoutController::class)->name('logout');
 Route::middleware('auth:api')->get('/user', function (Request $request) {
